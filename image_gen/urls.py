@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from .views import *
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('generate/', generate_image, name='generate_image'),
     path('health/', health_check, name='generate_image')
 
