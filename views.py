@@ -41,3 +41,7 @@ def generate_image(request):
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+def health_check(request):
+    return JsonResponse({'status': "OK"}, status=200)
