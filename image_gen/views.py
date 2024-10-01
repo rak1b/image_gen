@@ -5,8 +5,15 @@ import torch
 from io import BytesIO
 from PIL import Image
 
+from transformers import StableDiffusionPipeline
+
+model = StableDiffusionPipeline.from_pretrained(
+    "CompVis/stable-diffusion-v1-4", 
+    torch_dtype=torch.float16, 
+    low_cpu_mem_usage=True
+)
 # Load the Stable Diffusion model
-model = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", torch_dtype=torch.float16)
+# model = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", torch_dtype=torch.float16)
 model = model.to("cpu")  # Use "cpu" to limit memory usage; for GPU use, change to "cuda"
 
 # Limit the prompt complexity by restricting the length of the prompt

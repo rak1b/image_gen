@@ -5,30 +5,21 @@ FROM python:3.9-slim
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Set the working directory to /app
-WORKDIR /app
-
-# Install wget and curl
+# Install wget, curl, and other necessary dependencies
 RUN apt-get update && apt-get install -y wget curl && rm -rf /var/lib/apt/lists/*
 
-# Copy the requirements.txt file to the container
-COPY requirements.txt /app/
+# Set the working directory
+WORKDIR /app
 
-# Install Python dependencies
+# Install Python dependencies for models (add more if needed)
+COPY requirements.txt /app/
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Copy the entire project folder into the container
-COPY . /app/
+# Install accelerate for optimized model loading
 
-# Expose the port Django will run on
+# Pre-download the Stable Diffusion model and cache it
+RUN python -c "from diffusers import StableDiffusionPipeline; StableDiffusionPipeline.from_pretrained('CompVis/stable-diffusion-v1-4')"
+
+# Expose the port (optional if used later in your application)
 EXPOSE 8000
-
-# Collect static files
-RUN python manage.py collectstatic --noinput
-
-# Apply database migrations
-RUN python manage.py migrate
-
-# Start the Django server using Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "image_gen.wsgi:application"]

@@ -1,0 +1,13 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+    container_name: image_gen
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+    volumes:
+      - ./model_cache:/root/.cache/huggingface  # Mount the cache directory for HuggingFace models
+      - .:/app  # Your project directory mounted to the /app folder inside the container
