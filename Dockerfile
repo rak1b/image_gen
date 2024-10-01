@@ -8,10 +8,13 @@ ENV PYTHONUNBUFFERED 1
 # Set the working directory to /app
 WORKDIR /app
 
+# Install wget and curl
+RUN apt-get update && apt-get install -y wget curl && rm -rf /var/lib/apt/lists/*
+
 # Copy the requirements.txt file to the container
 COPY requirements.txt /app/
 
-# Install dependencies
+# Install Python dependencies
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
